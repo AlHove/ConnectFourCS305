@@ -8,19 +8,23 @@ namespace ConnectFour
 {
     class Player : Game
     {
-        public string color;
+        //public string color;
         public int turnNumber;
+        public char piece; 
 
         public string PropPlayer
         {
             get
             {
-                return color;
+                return piece;
+                //return color;
             }
 
             set
             {
-                color = value;
+                piece = value;
+                //color = value;
+                
             }
         }
         
