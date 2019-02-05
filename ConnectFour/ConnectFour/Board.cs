@@ -6,14 +6,14 @@ using System;
 public class Board
 {
     // Instance Variables 
-    public int width;
-    public int height;
+    public int row; // not really needed?
+    public int col; // not really needed?
     
     public board(char[,] array){
         array = array
     }
     // Setter
-    public void SetBoard()
+    public void SetBoard(int row,int col)
     {
       char[,] board = new char[15,7]{
             |_|_|_|_|_|_|_|
@@ -24,7 +24,8 @@ public class Board
             |_|_|_|_|_|_|_|
             |_|_|_|_|_|_|_|
     }
-        
+	    
+    // Getter
     public board GetBoard(){
      return board;
     }
@@ -32,12 +33,14 @@ public class Board
     // methods
     public bool ValidateLocation ( board b, int row, int col) // validate that location is free
     {
-        if (array[row,col].board = 'X' || 'O'){
+        if (array[row,col].b = 'X' || 'O'){
             return false;
         }
-        if (array[row,col].board = '_'){
+        if (array[row,col].b = '_'){
             return true;
     }
+	    
+	    
 
     public bool CheckHorWin (int row, int col, board b) // check if can win horizontally check left until nothing on left then start from beginning and go right
     {
@@ -103,14 +106,14 @@ public class Board
         
         */
 
-    public void DisplayBoard(board b) //show board
+    public void DisplayBoard(board b) //show current board
     Console.WriteLine(" 1 2 3 4 5 6 7 ");
     {
        for (int i = 0; i < 7; i++)
     {   Console.Write(i);
         for (int j = 0; j < 15; j++)
         {
-            Console.WriteLine(array[i,j].board);
+            Console.WriteLine(array[i,j].b);
         }
       
     }
