@@ -6,14 +6,14 @@ using System;
 public class Board
 {
     // Instance Variables 
-    public int row; // not really needed?
-    public int col; // not really needed?
+    public int row; 
+    public int col; 
     
     public board(char[,] array){
         array = array
     }
     // Setter
-    public void SetBoard(int row,int col)
+    public void SetBoard()
     {
       char[,] board = new char[15,7]{
             |_|_|_|_|_|_|_|
@@ -23,6 +23,7 @@ public class Board
             |_|_|_|_|_|_|_|
             |_|_|_|_|_|_|_|
             |_|_|_|_|_|_|_|
+    }
     }
 	    
     // Getter
