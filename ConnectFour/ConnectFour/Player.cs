@@ -1,4 +1,4 @@
-//Alyssa Hove and Katheryn Weeden
+﻿//Alyssa Hove and Katheryn Weeden
 // Started 2/1/19
 //Player class: Keeps track of Player Data
 using System;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ConnectFour
 {
-    class Player : Game
+    public class Player
     {
         //public string color;
-        public int turnNumber; //track of turn
+        //public int turnNumber; 
         public char piece; // Player Symbol
 
-        public string PropPlayer
+        public char PropPlayer
         {
             get
             {
@@ -27,9 +27,9 @@ namespace ConnectFour
             {
                 piece = value;
                 //color = value;
-                
+
             }
         }
-        
+
     }
 }
