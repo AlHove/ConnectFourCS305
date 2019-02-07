@@ -1,7 +1,6 @@
 ﻿//Katheryn Weeden and Alyssa Hove
 //Started: 2/1/19
-// Game class
-//Deals with Starting the Game, Stopping the game, and restarting game
+//Game class: Deals with Starting the Game, Stopping the game, and restarting game
 using System;
 using System.Collections.Generic;
 using System.Linq;

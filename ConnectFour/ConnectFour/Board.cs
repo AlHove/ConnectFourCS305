@@ -1,5 +1,5 @@
-﻿// Started by Alyssa Hove
-// 2/1/19
+﻿//Katheryn Weeden and Alyssa Hove
+//Started: 2/1/19
 // Board class: deals with validating spaces and checking for wins and losses
 using System;
 using System.Collections.Generic;
@@ -110,16 +110,16 @@ namespace ConnectFour
         }
         */
         public void DisplayBoard() { //show current board
-            Console.WriteLine(" 1 2 3 4 5 6 7 ");
-            for (int i = 0; i < 6; i++)
+            Console.WriteLine("  1 2 3 4 5 6 7 ");
+            for (int i = 0; i < 7; i++)
             { Console.Write(i + 1);
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < 7; j++)
                 {
                     Console.Write('|');
                     Console.Write(this.Grid[i, j]);
                 }
                 Console.WriteLine('|');
-                Console.WriteLine("_______________");
+                Console.WriteLine(" ______________");
             }
         }
         public void AddPiece(int row,int col,Player p, Board b){

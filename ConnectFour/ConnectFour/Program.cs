@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Katheryn Weeden and Alyssa Hove
+//Started: 2/1/19
+//Program class: Handles beginning the game with user
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
