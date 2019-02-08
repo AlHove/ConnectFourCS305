@@ -1,5 +1,5 @@
-﻿//Katheryn Weeden and Alyssa Hove
-//Started: 2/1/19
+﻿// Started by Alyssa Hove
+// 2/1/19
 // Board class: deals with validating spaces and checking for wins and losses
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,6 @@ namespace ConnectFour
         // Instance Variables 
         public int row;
         public int col;
-        public bool win;
         char[,] Grid = new char[7, 7];
 
 
@@ -27,20 +26,26 @@ namespace ConnectFour
         // Setter
         public void SetBoard()
         {
-            Grid = new char[7, 7];
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    Grid[i, j] = ' ';
+                }
+            }
         }
 
         // Getter
-         public Array GetBoard()
-           {
+        public Array GetBoard()
+        {
             return this.Grid;
-           }
+        }
 
         // methods
         public bool ValidateLocation(Board b, int row, int col) // validate that location is free
         {
             if (b.Grid[row, col] == 'X' ||
-                b.Grid[row,col] == 'O' )
+                b.Grid[row, col] == 'O')
             {
                 return false;
             }
@@ -54,61 +59,81 @@ namespace ConnectFour
             }
         }
 
-     /*   public bool CheckWin(Board b, Player p) { // all encompassing win check
+        public bool CheckWin(Board b, Player p) { // all encompassing win check
             bool win = false;
             char token = p.piece;
-            for (int i = 0; i < 7; i++)
+
+           
+            for (int i = 3; i < 7; i++)
             {
 
-                for (int ix = 0; ix < 7; i++)
+                for (int ix = 0; ix < 4; ix++)
                 {
-                    //Diagonal win /
+                    // Diagonal / win	
                     if (b.Grid[i, ix] == token &&
-                        b.Grid[i - 1, ix - 1] == token &&
-                        b.Grid[i - 2, ix - 2] == token &&
-                        b.Grid[i - 3, ix - 3] == token)
+                        b.Grid[i - 1, ix + 1] == token &&
+                        b.Grid[i - 2, ix + 2] == token &&
+                        b.Grid[i - 3, ix + 3] == token)
                     {
+
                         win = true;
-                        return win;
-                    }
-                    // Horizontal win	-
-                    if (b.Grid[i, ix] == token &&
-                        b.Grid[i - 1, ix] == token &&
-                        b.Grid[i - 2, ix] == token &&
-                        b.Grid[i - 3, ix] == token)
-                    {
-                        win = true;
-                        return win;
-                    }
-                    //Diagonal win \
-                    if (b.Grid[i, ix] == token &&
-                    b.Grid[i - 1, ix + 1] == token &&
-                    b.Grid[i - 2, ix + 2] == token &&
-                    b.Grid[i - 3, ix + 3] == token)
-                    {
-                        win = true;
-                        return win;
-                    }
-                    // Vertical win |
-                    if (b.Grid[i, ix] == token &&
-                         b.Grid[i, ix + 1] == token &&
-                         b.Grid[i, ix + 2] == token &&
-                         b.Grid[i, ix + 3] == token)
-                    {
-                        win = true;
-                        return win;
-                    }
-                    else
-                    {
-                         win = false;
                         return win;
                     }
                 }
-                
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+
+                for (int ix = 0; ix < 7; ix++)
+                {
+                    // Vertical win	|
+                    if (b.Grid[i, ix] == token &&
+                        b.Grid[i + 1, ix] == token &&
+                        b.Grid[i + 2, ix] == token &&
+                        b.Grid[i + 3, ix] == token)
+                    {
+                     
+                        win = true;
+                        return win;
+                    }
+                }
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int ix = 0; ix < 4; ix++)
+                {
+                    //Diagonal win Right \
+                    if (b.Grid[i, ix] == token &&
+                    b.Grid[i + 1, ix + 1] == token &&
+                    b.Grid[i + 2, ix + 2] == token &&
+                    b.Grid[i + 3, ix + 3] == token)
+                    {
+                        win = true;
+                        return win;
+                    }
+                }
+            }
+            for (int i = 0; i < 7; i++)
+            {
+
+                for (int ix = 0; ix < 4; ix++)
+                {
+                    // H win |
+                    if (b.Grid[i, ix] == token &&
+                 b.Grid[i, ix + 1] == token &&
+                 b.Grid[i, ix + 2] == token &&
+                 b.Grid[i, ix + 3] == token)
+                    {
+                        win = true;
+                        return win;
+                    }
+                } 
+            }
+            win = false;
             return win;
         }
-        */
+        
         public void DisplayBoard() { //show current board
             Console.WriteLine("  1 2 3 4 5 6 7 ");
             for (int i = 0; i < 7; i++)
@@ -119,15 +144,21 @@ namespace ConnectFour
                     Console.Write(this.Grid[i, j]);
                 }
                 Console.WriteLine('|');
-                Console.WriteLine(" ______________");
+                Console.WriteLine("  ______________");
             }
         }
-        public void AddPiece(int row,int col,Player p, Board b){
+        public bool AddPiece(int row,int col,Player p, Board b){
+            bool valid = false;
             row = row - 1;
             col = col - 1;
-            ValidateLocation(b, row, col);
-            b.Grid[row, col] = p.piece;
-           // CheckWin(b,p);
+            valid = ValidateLocation(b, row, col);
+            if (valid == true)
+            {
+                b.Grid[row, col] = p.piece;
+                return true;
+            }
+           
+            return false;
 
         }
     }

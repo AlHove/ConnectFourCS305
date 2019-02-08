@@ -1,7 +1,4 @@
-﻿//Katheryn Weeden and Alyssa Hove
-//Started: 2/1/19
-//Program class: Handles beginning the game with user
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,11 +21,20 @@ namespace ConnectFour
                 if (result == 0)
                 {
                     g.NewGame();
+                    Console.WriteLine("Congratulations you won!");
+                    Console.WriteLine("Press 1 for new Game. Press 2 to exit");
+                    if (int.TryParse(Console.ReadLine(), out result))
+                    {
+                        if (result == 1)
+                        {
+                            g.NewGame();
+                        }
+                    
+                    }
+
+
                 }
-                if (result == 1)
-                {
-                    g.StartGame();
-                }
+ 
 
             }
 
