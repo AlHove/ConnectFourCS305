@@ -47,6 +47,14 @@ namespace ConnectFour
                 b.DisplayBoard();
                 Console.WriteLine("Player One choose your location, row then column");
                 x = Console.ReadLine();
+                 if (String.Equals(input, "save", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        Stream saveFile = File.Create(saveFileName);
+                        SoapFormatter serializer = new SoapFormatter();
+                        serializer.Serialize(saveFile, game);
+                        saveFile.Close();
+                        return;
+                    }
                 VarRow = Convert.ToInt32(x.Split(' ')[0]);
                 VarCol = Convert.ToInt32(x.Split(' ')[1]);
                 placed = b.AddPiece(VarRow, VarCol, player, b);
@@ -55,6 +63,14 @@ namespace ConnectFour
                     {
                         Console.WriteLine("Player One invalid location choose another location, row then column");
                         x = Console.ReadLine();
+                              if (String.Equals(x, "save", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        Stream saveFile = File.Create(saveFileName);
+                        SoapFormatter serializer = new SoapFormatter();
+                        serializer.Serialize(saveFile, game);
+                        saveFile.Close();
+                        return;
+                    }
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
                         placed = b.AddPiece(VarRow, VarCol, player, b);
