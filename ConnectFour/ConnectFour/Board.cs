@@ -21,7 +21,7 @@ namespace ConnectFour
 
         public Board()
         {
-            SetBoard();
+
         }
 
         // Setter
@@ -36,6 +36,11 @@ namespace ConnectFour
             }
         }
 
+        public void SetExistingBoard(char[,] g)
+        {
+            Grid = g;
+        }
+
         // Getter
         public Array GetBoard()
         {
@@ -43,7 +48,7 @@ namespace ConnectFour
         }
 
         // Validate that location is free
-        public bool ValidateLocation(Board b, int row, int col) 
+        public bool ValidateLocation(Board b, int row, int col)
         {
             if (b.Grid[row, col] == 'X' ||
                 b.Grid[row, col] == 'O')
@@ -63,10 +68,10 @@ namespace ConnectFour
 
         // Validate that requested location is free
         public bool CheckWin(Board b, Player p)
-        { 
+        {
             bool win = false;
             char token = p.piece;
-            
+
             // Loops through board to check for Diagonal / win
             for (int i = 3; i < 7; i++)
             {
@@ -129,13 +134,13 @@ namespace ConnectFour
                         win = true;
                         return win;
                     }
-                } 
+                }
             }
 
             // If no wins yet, return win - initialized as false
             return win;
         }
-        
+
         // Show current board
         public void DisplayBoard()
         {
@@ -155,7 +160,7 @@ namespace ConnectFour
         }
 
         // Adds a piece to the board
-        public bool AddPiece(int row,int col,Player p, Board b)
+        public bool AddPiece(int row, int col, Player p, Board b)
         {
             bool valid = false;
             row = row - 1;

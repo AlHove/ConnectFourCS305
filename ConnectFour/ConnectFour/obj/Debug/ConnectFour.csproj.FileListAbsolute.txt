@@ -1,0 +1,7 @@
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\bin\Debug\ConnectFour.exe.config
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\bin\Debug\ConnectFour.exe
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\bin\Debug\ConnectFour.pdb
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\obj\Debug\ConnectFour.csprojAssemblyReference.cache
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\obj\Debug\ConnectFour.csproj.CoreCompileInputs.cache
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\obj\Debug\ConnectFour.exe
+C:\Users\Kinky K\Documents\GitHub\ConnectFourCS305\ConnectFour\ConnectFour\obj\Debug\ConnectFour.pdb
