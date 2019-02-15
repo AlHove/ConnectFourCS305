@@ -3,16 +3,8 @@
 // Program class: initiates interaction with user
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.IO;
-using static ConnectFour.Player;
-using static ConnectFour.Board;
-
-
 
 namespace ConnectFour
 {
@@ -20,6 +12,7 @@ namespace ConnectFour
     {
         //path to saved serialized data
         const string saveFileName = "Connect4Save.xml";
+        const string newGameFile = "Connect4Start.xml";
 
         static void Main(string[] args)
         {
@@ -40,29 +33,36 @@ namespace ConnectFour
                     char[,] g = (char[,])(deserializer.Deserialize(saveFile));
                     saveFile.Close();
                     Console.WriteLine();
-                    result = game.StartGame(g,turn);
-                    if (result == "s")
-                    {
-                        Console.WriteLine("Your game has been saved. Enter any key to exit");
-                        Console.ReadKey();
-                        
-                    }
+                    result = game.StartGame(g, turn);
 
-                    else if (result == "w")
-                    {// Once the game is won, delete the saved file
+                    // Once the game is won, delete the saved file
+                    if (result == "w")
+                    {
                         File.Delete(saveFileName);
                     }
                 }
                 else
                 {
                     Console.WriteLine("\nHere is a new game instead:");
-                    result = game.NewGame();
+                    Stream newGame = File.OpenRead(newGameFile);
+                    SoapFormatter deserializer = new SoapFormatter();
+                    int turn = (int)(deserializer.Deserialize(newGame));
+                    char[,] g = (char[,])(deserializer.Deserialize(newGame));
+                    newGame.Close();
+                    Console.WriteLine();
+                    result = game.StartGame(g, turn);
                 }
             }
             else
             {
                 Console.WriteLine("Welcome to Connect Four");
-                result = game.NewGame();
+                Stream newGame = File.OpenRead(newGameFile);
+                SoapFormatter deserializer = new SoapFormatter();
+                int turn = (int)(deserializer.Deserialize(newGame));
+                char[,] g = (char[,])(deserializer.Deserialize(newGame));
+                newGame.Close();
+                Console.WriteLine();
+                result = game.StartGame(g, turn);
             }
 
             if (result == "w")

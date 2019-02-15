@@ -3,12 +3,6 @@
 // Game class: Deals with Starting the Game, Stopping the game, and restarting game
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ConnectFour.Player;
-using static ConnectFour.Board;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.IO;
 
@@ -47,65 +41,81 @@ namespace ConnectFour
             int VarRow;
 
             //Initialize the players
-            Player player = new Player();
-            player.piece = 'X';
-            player.turnNumber = 0;
-            Player playerTwo = new Player();
-            playerTwo.piece = 'O';
-            playerTwo.turnNumber = 1;
+            Player player = new Player()
+            {
+                piece = 'X',
+                turnNumber = 0
+            };
+            Player playerTwo = new Player()
+            {
+                piece = '0',
+                turnNumber = 1
+            };
             int turn = saveTurn;
-
-
 
             //Loops through a series of asking player one and two to input a location
             //Assumes the location input is always formatted as 'row# col#' w/o error checking
             do
             {
+                //Player One plays
                 if (turn == 0)
                 {
                     b.DisplayBoard();
-                    Console.WriteLine("Player One choose your location, row then column, or input save to save game, for row 1 column 1 put 1 1");
+                    Console.WriteLine("Player One choose your location, row then column, or input save to save game");
+                    Console.WriteLine("(for row 1 column 1 put: 1 1)");
                     x = SaveGame(Console.ReadLine(), b, player);
                     if (x == "save")
                     {
                         return "s";
                     }
-                    try // try to get input
+
+                    // Try to get input
+                    try
                     {
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        turn = 1;
                     }
-                    catch (IndexOutOfRangeException e) //Catch the Exception
-                    {
-                        Console.WriteLine(e);
 
+                    //Catch any incorrect input and continue playing
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Invalid location: try again");
                         PlayGame(b, turn);
 
                     }
-                    finally // get the value
-                    {
-                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, 'X', b);
-                        turn = 1;
-                    }
-                    while (placed == false) // if location was input correctly but is occupied
+
+                    // If location was input correctly but is occupied
+                    while (placed == false)
                     {
                         Console.WriteLine("Player One invalid location choose another location, row then column");
                         x = Console.ReadLine();
-                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, 'X', b);
-                        turn = 1;
+                        try
+                        {
+                            VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                            VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                            placed = b.AddPiece(VarRow, VarCol, player, b);
+                            turn = 1;
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Invalid location: try again");
+                            PlayGame(b, turn);
+                        }
+                        
                     }
                     win = b.CheckWin(b, player);
-                    
 
-                    if (win == true) // if player 1 won
+                    // if Player One won
+                    if (win == true)
                     {
+                        b.DisplayBoard();
                         break;
                     }
                 }
+
+                //Player Two plays
                 if (turn == 1)
                 {
                     b.DisplayBoard();
@@ -115,42 +125,39 @@ namespace ConnectFour
                     {
                         return "s";
                     }
+
+                    // Try to get input
                     try
                     {
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                        Console.WriteLine(e);
-                        PlayGame(b, turn);
-                    }
-                    finally
-                    {
-                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, 'O', b);
+                        placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
                         turn = 0;
                     }
+
+                    //Catch any incorrect input and continue playing
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Invalid location: try again");
+                        PlayGame(b, turn);
+                    }
+                    
+                    // If location was input correctly but is occupied
                     while (placed == false)
                     {
                         Console.WriteLine("Player Two invalid location choose another location");
+                        x = Console.ReadLine();
                         try
                         {
                             VarRow = Convert.ToInt32(x.Split(' ')[0]);
                             VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        }
-                        catch (IndexOutOfRangeException e)
-                        {
-                            Console.WriteLine(e);
-                            PlayGame(b, turn);
-                        }
-                        finally
-                        {
-                            VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                            VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                            placed = b.AddPiece(VarRow, VarCol, 'O', b);
+                            placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
                             turn = 0;
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Invalid location: try again");
+                            PlayGame(b, turn);
                         }
                     }
                     win = b.CheckWin(b, playerTwo);
@@ -160,12 +167,13 @@ namespace ConnectFour
                         b.DisplayBoard();
                     }
                 }
-                } while (win == false) ;
-                return "w";
-            }
+            } while (win == false);
+
+            return "w";
+        }
 
         // Checks user input for save and saves the current game if requested
-        public string SaveGame(string s, Board b,Player p)
+        public string SaveGame(string s, Board b, Player p)
         {
             if (String.Equals(s, "save", StringComparison.CurrentCultureIgnoreCase))
             {

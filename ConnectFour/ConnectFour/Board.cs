@@ -3,11 +3,6 @@
 // Board class: deals with validating spaces and checking for wins and losses
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ConnectFour.Player;
 
 namespace ConnectFour
 {
@@ -16,8 +11,7 @@ namespace ConnectFour
         // Instance Variables 
         public int row;
         public int col;
-        char[,] Grid = new char[7, 7];
-
+        char[,] Grid;
 
         public Board()
         {
