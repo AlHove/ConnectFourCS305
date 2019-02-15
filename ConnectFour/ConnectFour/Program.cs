@@ -1,4 +1,4 @@
-﻿// Katheryn Weeden and Alyssa Hove
+// Katheryn Weeden and Alyssa Hove
 // Started: 2/1/19
 // Program class: initiates interaction with user
 
@@ -36,13 +36,22 @@ namespace ConnectFour
                 {
                     Stream saveFile = File.OpenRead(saveFileName);
                     SoapFormatter deserializer = new SoapFormatter();
+                    int turn = (int)(deserializer.Deserialize(saveFile));
                     char[,] g = (char[,])(deserializer.Deserialize(saveFile));
                     saveFile.Close();
                     Console.WriteLine();
-                    result = game.StartGame(g);
+                    result = game.StartGame(g,turn);
+                    if (result == "s")
+                    {
+                        Console.WriteLine("Your game has been saved. Enter any key to exit");
+                        Console.ReadKey();
+                        
+                    }
 
-                    // Once the game is won, delete the saved file
-                    File.Delete(saveFileName);
+                    else if (result == "w")
+                    {// Once the game is won, delete the saved file
+                        File.Delete(saveFileName);
+                    }
                 }
                 else
                 {
@@ -69,5 +78,3 @@ namespace ConnectFour
         }
     }
 }
-
-
