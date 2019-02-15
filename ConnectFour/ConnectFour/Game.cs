@@ -1,4 +1,4 @@
-﻿// Katheryn Weeden and Alyssa Hove
+// Katheryn Weeden and Alyssa Hove
 // Started: 2/1/19
 // Game class: Deals with Starting the Game, Stopping the game, and restarting game
 
@@ -19,11 +19,11 @@ namespace ConnectFour
         // Start the game
         // Method will also allow saved game in future
         // Returns a "w" for win or a "s" for save
-        public string StartGame(char[,] g)
+        public string StartGame(char[,] g, int turn)
         {
             Board b = new Board();
             b.SetExistingBoard(g);
-            return (PlayGame(b));
+            return (PlayGame(b, turn));
         }
 
         // Start a New Game
@@ -33,93 +33,130 @@ namespace ConnectFour
             //Initialize the board
             Board b = new Board();
             b.SetBoard();
-            return(PlayGame(b));
+            return (PlayGame(b, 0));
         }
 
         // Continues to prompt users to play until a win or save occurs
         // Returns a "w" for win or a "s" for save
-        public string PlayGame(Board b)
+        public string PlayGame(Board b, int saveTurn)
         {
             bool win = false;
             bool placed = false;
             string x;
             int VarCol;
             int VarRow;
-            
+
             //Initialize the players
             Player player = new Player();
             player.piece = 'X';
+            player.turnNumber = 0;
             Player playerTwo = new Player();
             playerTwo.piece = 'O';
+            playerTwo.turnNumber = 1;
+            int turn = saveTurn;
+
+
 
             //Loops through a series of asking player one and two to input a location
             //Assumes the location input is always formatted as 'row# col#' w/o error checking
             do
             {
-                b.DisplayBoard();
-                Console.WriteLine("Player One choose your location, row then column, or input save to save game");
-                x = SaveGame(Console.ReadLine(), b);
-                if (x == "save")
-                {
-                    return "s";
-                }
-                VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                placed = b.AddPiece(VarRow, VarCol, player, b);
-
-                while (placed == false)
-                {
-                    Console.WriteLine("Player One invalid location choose another location, row then column");
-                    x = Console.ReadLine();
-                    VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                    VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                    placed = b.AddPiece(VarRow, VarCol, player, b);
-                }
-                win = b.CheckWin(b, player);
-                b.DisplayBoard();
-
-                if (win == true)
-                {
-                    break;
-                }
-
-                Console.WriteLine("Player Two choose your location, row then column, or input save to save game");
-                x = SaveGame(Console.ReadLine(), b);
-                if (x == "save")
-                {
-                    return "s";
-                }
-                VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
-
-                while (placed == false)
-                {
-                    Console.WriteLine("Player Two invalid location choose another location");
-                    x = Console.ReadLine();
-                    VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                    VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                    placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
-                }
-                win = b.CheckWin(b, playerTwo);
-
-                if (win == true)
+                if (turn == 0)
                 {
                     b.DisplayBoard();
-                }
+                    Console.WriteLine("Player One choose your location, row then column, or input save to save game");
+                    x = SaveGame(Console.ReadLine(), b, player);
+                    if (x == "save")
+                    {
+                        return "s";
+                    }
+                    try // try to get input
+                    {
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                    }
+                    catch (IndexOutOfRangeException e) //Catch the Exception
+                    {
+                        Console.WriteLine(e);
+                    }
+                    finally // get the value
+                    {
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        turn = 1;
+                    }
+                    while (placed == false) // if location was input correctly but is occupied
+                    {
+                        Console.WriteLine("Player One invalid location choose another location, row then column");
+                        x = Console.ReadLine();
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        turn = 1;
+                    }
+                    win = b.CheckWin(b, player);
+                    b.DisplayBoard();
 
-            } while (win == false);
-            return "w";
-        }
+                    if (win == true) // if player 1 won
+                    {
+                        break;
+                    }
+                }
+                if (turn == 1)
+                {
+                    Console.WriteLine("Player Two choose your location, row then column, or input save to save game");
+                    x = SaveGame(Console.ReadLine(), b, playerTwo);
+                    if (x == "save")
+                    {
+                        return "s";
+                    }
+                    try
+                    {
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    finally
+                    {
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        turn = 0;
+                    }
+                    while (placed == false)
+                    {
+                        Console.WriteLine("Player Two invalid location choose another location");
+                        x = Console.ReadLine();
+                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
+                        turn = 0;
+                    }
+                    win = b.CheckWin(b, playerTwo);
+
+                    if (win == true)
+                    {
+                        b.DisplayBoard();
+                    }
+                }
+                } while (win == false) ;
+                return "w";
+            }
 
         // Checks user input for save and saves the current game if requested
-        public string SaveGame(string s, Board b)
+        public string SaveGame(string s, Board b,Player p)
         {
             if (String.Equals(s, "save", StringComparison.CurrentCultureIgnoreCase))
             {
                 Stream saveFile = File.Create("Connect4Save.xml");
                 SoapFormatter serializer = new SoapFormatter();
+                serializer.Serialize(saveFile, p.getTurnNumber());
                 serializer.Serialize(saveFile, b.GetBoard());
+
                 saveFile.Close();
                 return "save";
             }
@@ -133,7 +170,6 @@ namespace ConnectFour
         {
             NewGame();
         }
-
         */
     }
 }
