@@ -64,7 +64,7 @@ namespace ConnectFour
                 if (turn == 0)
                 {
                     b.DisplayBoard();
-                    Console.WriteLine("Player One choose your location, row then column, or input save to save game");
+                    Console.WriteLine("Player One choose your location, row then column, or input save to save game, for row 1 column 1 put 1 1");
                     x = SaveGame(Console.ReadLine(), b, player);
                     if (x == "save")
                     {
@@ -78,12 +78,15 @@ namespace ConnectFour
                     catch (IndexOutOfRangeException e) //Catch the Exception
                     {
                         Console.WriteLine(e);
+
+                        PlayGame(b, turn);
+
                     }
                     finally // get the value
                     {
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        placed = b.AddPiece(VarRow, VarCol, 'X', b);
                         turn = 1;
                     }
                     while (placed == false) // if location was input correctly but is occupied
@@ -92,11 +95,11 @@ namespace ConnectFour
                         x = Console.ReadLine();
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        placed = b.AddPiece(VarRow, VarCol, 'X', b);
                         turn = 1;
                     }
                     win = b.CheckWin(b, player);
-                    b.DisplayBoard();
+                    
 
                     if (win == true) // if player 1 won
                     {
@@ -105,6 +108,7 @@ namespace ConnectFour
                 }
                 if (turn == 1)
                 {
+                    b.DisplayBoard();
                     Console.WriteLine("Player Two choose your location, row then column, or input save to save game");
                     x = SaveGame(Console.ReadLine(), b, playerTwo);
                     if (x == "save")
@@ -119,22 +123,35 @@ namespace ConnectFour
                     catch (IndexOutOfRangeException e)
                     {
                         Console.WriteLine(e);
+                        PlayGame(b, turn);
                     }
                     finally
                     {
                         VarRow = Convert.ToInt32(x.Split(' ')[0]);
                         VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, player, b);
+                        placed = b.AddPiece(VarRow, VarCol, 'O', b);
                         turn = 0;
                     }
                     while (placed == false)
                     {
                         Console.WriteLine("Player Two invalid location choose another location");
-                        x = Console.ReadLine();
-                        VarRow = Convert.ToInt32(x.Split(' ')[0]);
-                        VarCol = Convert.ToInt32(x.Split(' ')[1]);
-                        placed = b.AddPiece(VarRow, VarCol, playerTwo, b);
-                        turn = 0;
+                        try
+                        {
+                            VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                            VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine(e);
+                            PlayGame(b, turn);
+                        }
+                        finally
+                        {
+                            VarRow = Convert.ToInt32(x.Split(' ')[0]);
+                            VarCol = Convert.ToInt32(x.Split(' ')[1]);
+                            placed = b.AddPiece(VarRow, VarCol, 'O', b);
+                            turn = 0;
+                        }
                     }
                     win = b.CheckWin(b, playerTwo);
 
